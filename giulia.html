@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Un messaggio per te 💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink: #ff6b8a;
+    --pink-light: #ffb3c1;
+    --dark: #1a0a10;
+    --card: #2a1020;
+    --text: #f5e6ea;
+    --muted: #c9a8b2;
+    --accent: #ff3d6b;
+  }
+
+  html, body {
+    min-height: 100vh;
+    background: var(--dark);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 20%, rgba(255,107,138,0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(255,61,107,0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #app {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px;
+  }
+
+  .screen {
+    display: none;
+    width: 100%;
+    max-width: 420px;
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .screen.active { display: flex; flex-direction: column; align-items: center; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCREEN 1: Hero ── */
+  .hero-badge {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 16px;
+    opacity: 0.8;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 8vw, 3rem);
+    line-height: 1.15;
+    text-align: center;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--pink-light);
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .floating-hearts {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .heart-float {
+    position: absolute;
+    font-size: 18px;
+    animation: floatHeart linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes floatHeart {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.4; }
+    90% { opacity: 0.2; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card);
+    border: 1px solid rgba(255,107,138,0.15);
+    border-radius: 24px;
+    padding: 32px 28px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,107,138,0.05);
+    margin-bottom: 20px;
+  }
+
+  .card-label {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 12px;
+  }
+
+  .card-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .card-sub {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    width: 100%;
+    padding: 18px 28px;
+    border-radius: 100px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.3px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--pink), var(--accent));
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(255,61,107,0.35);
+  }
+  .btn-primary:active { transform: scale(0.97); }
+
+  .btn-secondary {
+    background: rgba(255,107,138,0.08);
+    color: var(--pink-light);
+    border: 1px solid rgba(255,107,138,0.2);
+    margin-top: 12px;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(255,107,138,0.1);
+    border-radius: 100px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pink), var(--accent));
+    border-radius: 100px;
+    transition: width 0.4s ease;
+  }
+
+  /* ── QUESTION ── */
+  .question-number {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: #fff;
+    margin-bottom: 28px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .option-btn {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,107,138,0.12);
+    border-radius: 16px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .option-btn:active { transform: scale(0.98); }
+
+  .option-btn.selected {
+    background: rgba(255,107,138,0.12);
+    border-color: var(--pink);
+    color: #fff;
+  }
+
+  .option-emoji {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  /* ── TEXT INPUT ── */
+  .text-input {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,107,138,0.2);
+    border-radius: 16px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 20px;
+    resize: none;
+    min-height: 80px;
+  }
+  .text-input::placeholder { color: var(--muted); }
+  .text-input:focus { border-color: var(--pink); }
+
+  /* ── FINAL SCREEN ── */
+  .final-emoji {
+    font-size: 64px;
+    margin-bottom: 20px;
+    display: block;
+    text-align: center;
+    animation: bounce 1s ease infinite alternate;
+  }
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+  }
+
+  .final-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .final-sub {
+    font-size: 15px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+
+  .whatsapp-btn {
+    width: 100%;
+    padding: 18px 28px;
+    border-radius: 100px;
+    border: none;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(37,211,102,0.3);
+    transition: transform 0.2s;
+  }
+  .whatsapp-btn:active { transform: scale(0.97); }
+
+  .confetti {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 999;
+  }
+  .confetti-piece {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+    opacity: 0;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  .divider {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--pink), var(--accent));
+    border-radius: 100px;
+    margin: 20px auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="floating-hearts" id="hearts"></div>
+<div class="confetti" id="confetti"></div>
+
+<div id="app">
+
+  <!-- SCREEN 1: Intro -->
+  <div class="screen active" id="screen-0">
+    <p class="hero-badge">✦ Un messaggio speciale ✦</p>
+    <h1 class="hero-title">Ciao <em>Giulia</em>,<br>ho qualcosa<br>da dirti… 👀</h1>
+    <p class="hero-sub">Ci vogliono solo 2 minuti.<br>Promesso, ne vale la pena.</p>
+    <div style="width:100%;max-width:420px">
+      <button class="btn btn-primary" onclick="nextScreen()">Dai, sono curiosa →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: La frase ad effetto -->
+  <div class="screen" id="screen-1">
+    <div class="card" style="text-align:center">
+      <div style="font-size:48px;margin-bottom:16px">🎯</div>
+      <p class="card-label">Il punto è questo</p>
+      <p class="card-text">"Non credo nel destino… però è strano che tu sia finita proprio su questo quiz."</p>
+      <div class="divider"></div>
+      <p class="card-sub">Ok ok, scherzi a parte… sono Alessandro e voglio portarti a fare qualcosa di bello. Ma prima, fammi capire un po' con chi ho a che fare 😏</p>
+    </div>
+    <div style="width:100%;max-width:420px">
+      <button class="btn btn-primary" onclick="nextScreen()">Ok, mi hai incuriosita 👀</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3-6: Domande -->
+  <div class="screen" id="screen-questions">
+    <div style="width:100%;max-width:420px">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress" style="width:0%"></div>
+      </div>
+      <p class="question-number" id="q-number">Domanda 1 di 4</p>
+      <p class="question-text" id="q-text"></p>
+      <div class="options" id="q-options"></div>
+      <div id="q-text-input-wrap" style="display:none">
+        <textarea class="text-input" id="q-text-input" placeholder="Scrivi qui…" rows="3"></textarea>
+      </div>
+      <button class="btn btn-primary" id="q-next-btn" onclick="nextQuestion()" style="margin-top:16px;display:none">Avanti →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN finale -->
+  <div class="screen" id="screen-final">
+    <span class="final-emoji">💌</span>
+    <h2 class="final-title">Ora sai tutto<br>su di me… quasi.</h2>
+    <p class="final-sub">Il resto te lo racconto di persona.<br>Se hai il coraggio di scrivermi 😉<br><br>— Alessandro</p>
+    <div style="width:100%;max-width:420px">
+      <a class="whatsapp-btn" id="wa-link" href="#" target="_blank">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Scrivimi su WhatsApp
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    text: "Prima cosa importante: pizza o sushi? 🍕🍣",
+    type: "choice",
+    options: [
+      { emoji: "🍕", text: "Pizza, sempre e comunque" },
+      { emoji: "🍣", text: "Sushi, sono sofisticata" },
+      { emoji: "🤷‍♀️", text: "Dipende dall'umore" },
+      { emoji: "😂", text: "Entrambi, non scegliere è una scelta" }
+    ]
+  },
+  {
+    text: "Una serata perfetta per te è…",
+    type: "choice",
+    options: [
+      { emoji: "🎬", text: "Cinema + cena fuori" },
+      { emoji: "🌙", text: "Passeggiata notturna in centro" },
+      { emoji: "🎉", text: "Aperitivo con gli amici" },
+      { emoji: "🛋️", text: "Serie TV sul divano" }
+    ]
+  },
+  {
+    text: "Cosa pensi di uno che ti manda un quiz per chiederti di uscire? 😅",
+    type: "choice",
+    options: [
+      { emoji: "😂", text: "È ridicolo ma mi fa ridere" },
+      { emoji: "🤔", text: "Originale, devo ammettere" },
+      { emoji: "😍", text: "È dolcissimo, punto" },
+      { emoji: "🚩", text: "Red flag… però sono ancora qui" }
+    ]
+  },
+  {
+    text: "Ultima domanda, quella che conta… vorresti uscire con me? 👀",
+    type: "choice",
+    options: [
+      { emoji: "✅", text: "Sì, dai perché no" },
+      { emoji: "🤭", text: "Forse… dipende da come chiedi" },
+      { emoji: "💬", text: "Scrivimi e lo scopri" },
+      { emoji: "😏", text: "Già lo sai la risposta" }
+    ]
+  }
+];
+
+let currentQuestion = 0;
+let answers = [];
+let selectedOption = null;
+
+// Floating hearts
+const heartsContainer = document.getElementById('hearts');
+const heartEmojis = ['❤️','💕','💗','💓','✨','💫','🌸'];
+for (let i = 0; i < 12; i++) {
+  const h = document.createElement('div');
+  h.className = 'heart-float';
+  h.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+  h.style.left = Math.random() * 100 + 'vw';
+  h.style.animationDuration = (8 + Math.random() * 10) + 's';
+  h.style.animationDelay = (Math.random() * 10) + 's';
+  h.style.fontSize = (12 + Math.random() * 14) + 'px';
+  heartsContainer.appendChild(h);
+}
+
+let screenIndex = 0;
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    el.classList.add('active');
+  }, 50);
+}
+
+function nextScreen() {
+  screenIndex++;
+  if (screenIndex === 1) showScreen('screen-1');
+  else if (screenIndex === 2) {
+    showScreen('screen-questions');
+    loadQuestion(0);
+  }
+}
+
+function loadQuestion(index) {
+  const q = questions[index];
+  document.getElementById('q-number').textContent = `Domanda ${index + 1} di ${questions.length}`;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('progress').style.width = ((index / questions.length) * 100) + '%';
+  document.getElementById('q-next-btn').style.display = 'none';
+  selectedOption = null;
+
+  const optionsEl = document.getElementById('q-options');
+  const textWrap = document.getElementById('q-text-input-wrap');
+  const textInput = document.getElementById('q-text-input');
+
+  optionsEl.innerHTML = '';
+  textWrap.style.display = 'none';
+  textInput.value = '';
+
+  if (q.type === 'choice') {
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = `<span class="option-emoji">${opt.emoji}</span><span>${opt.text}</span>`;
+      btn.onclick = () => {
+        document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedOption = opt.text;
+        document.getElementById('q-next-btn').style.display = 'block';
+      };
+      optionsEl.appendChild(btn);
+    });
+  } else {
+    textWrap.style.display = 'block';
+    textInput.oninput = () => {
+      selectedOption = textInput.value;
+      document.getElementById('q-next-btn').style.display = textInput.value.trim() ? 'block' : 'none';
+    };
+  }
+}
+
+function nextQuestion() {
+  if (selectedOption === null) return;
+  answers.push({ question: questions[currentQuestion].text, answer: selectedOption });
+  currentQuestion++;
+
+  if (currentQuestion < questions.length) {
+    // Re-animate
+    const qs = document.getElementById('screen-questions');
+    qs.style.animation = 'none';
+    qs.offsetHeight;
+    qs.style.animation = 'fadeUp 0.4s ease forwards';
+    loadQuestion(currentQuestion);
+  } else {
+    sendToEmail();
+    showFinal();
+  }
+}
+
+function showFinal() {
+  // Set WhatsApp link
+  const phone = '393335221532';
+  const msg = encodeURIComponent("Ciao Alessandro! Ho fatto il tuo quiz… 😏");
+  document.getElementById('wa-link').href = `https://wa.me/${phone}?text=${msg}`;
+
+  showScreen('screen-final');
+  launchConfetti();
+}
+
+function launchConfetti() {
+  const colors = ['#ff6b8a','#ff3d6b','#ffb3c1','#fff','#ff8fab'];
+  const container = document.getElementById('confetti');
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.top = '-10px';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    piece.style.animationDelay = (Math.random() * 1.5) + 's';
+    piece.style.transform = `rotate(${Math.random()*360}deg)`;
+    piece.style.width = (6 + Math.random() * 8) + 'px';
+    piece.style.height = (6 + Math.random() * 8) + 'px';
+    container.appendChild(piece);
+    setTimeout(() => piece.remove(), 4000);
+  }
+}
+
+async function sendToEmail() {
+  emailjs.init('cRHznR2oSen6Q0dqF');
+
+  const risposte = answers.map((a, i) =>
+    `Domanda ${i + 1}: ${a.question}\nRisposta: ${a.answer}`
+  ).join('\n\n');
+
+  const templateParams = {
+    risposte: risposte
+  };
+
+  try {
+    await emailjs.send('service_uss06bh', 'template_c8dw2nn', templateParams);
+    console.log('Email inviata con successo!');
+  } catch (error) {
+    console.error('Errore invio email:', error);
+  }
+}
+</script>
+</body>
+</html>
