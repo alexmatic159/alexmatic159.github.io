@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0f1e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Listone 2026">
+<title>Listone Mondiale 2026</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0f1e;
+  --surface:#111827;
+  --surface2:#1a2235;
+  --surface3:#1f2b42;
+  --gold:#f5c518;
+  --gold2:#e6a800;
+  --green:#22c55e;
+  --red:#ef4444;
+  --blue:#3b82f6;
+  --purple:#a855f7;
+  --text:#f1f5f9;
+  --muted:#94a3b8;
+  --border:#2a3a55;
+  --ff:'DM Sans',sans-serif;
+  --fh:'Bebas Neue',sans-serif;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--ff);font-size:14px;overflow-x:hidden}
+h1,h2,h3{font-family:var(--fh);letter-spacing:.5px}
+
+/* === LAYOUT === */
+.app{max-width:440px;margin:0 auto;padding-bottom:80px;min-height:100vh}
+
+/* === HEADER === */
+.header{background:var(--surface);padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200}
+.header-inner{display:flex;align-items:center;gap:10px}
+.ball{width:38px;height:38px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 0 20px rgba(245,197,24,.3)}
+.header h1{font-size:30px;color:var(--gold);line-height:1;letter-spacing:1px}
+.header-sub{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+.header-right{margin-left:auto;display:flex;gap:6px;align-items:center}
+
+/* === TABS === */
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:67px;z-index:199}
+.tab{flex:1;padding:9px 2px 8px;text-align:center;cursor:pointer;font-size:9.5px;font-family:var(--fh);letter-spacing:.8px;color:var(--muted);border-bottom:2px solid transparent;transition:.2s;text-transform:uppercase}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab i{display:block;font-size:17px;margin-bottom:1px}
+
+/* === PAGES === */
+.page{display:none;padding:12px 14px}
+.page.active{display:block}
+
+/* === CARDS === */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+.card-title{font-family:var(--fh);font-size:20px;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+
+/* === CLASSIFICA === */
+.rank-row{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;margin-bottom:5px;background:var(--surface2);border:1px solid transparent;transition:.15s}
+.rank-row.pos1{background:linear-gradient(90deg,rgba(245,197,24,.12),var(--surface2));border-color:rgba(245,197,24,.25)}
+.rank-row.pos2{background:linear-gradient(90deg,rgba(192,192,192,.08),var(--surface2));border-color:rgba(192,192,192,.15)}
+.rank-row.pos3{background:linear-gradient(90deg,rgba(205,127,50,.08),var(--surface2));border-color:rgba(205,127,50,.15)}
+.pos-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;background:var(--surface3);color:var(--muted)}
+.pos-num.g{background:var(--gold);color:#000;font-family:var(--fh);font-size:14px}
+.pos-num.s{background:#c0c0c0;color:#000;font-family:var(--fh);font-size:14px}
+.pos-num.b{background:#cd7f32;color:#fff;font-family:var(--fh);font-size:14px}
+.rank-name{flex:1;font-weight:500;font-size:14px}
+.rank-detail{font-size:11px;color:var(--muted);margin-top:1px}
+.rank-pts{font-family:var(--fh);font-size:22px;color:var(--gold);text-align:right}
+.rank-pts-lbl{font-size:10px;color:var(--muted);text-align:right}
+
+/* === STAT GRID === */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.stat-num{font-family:var(--fh);font-size:28px;color:var(--gold);line-height:1}
+.stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+
+/* === BUTTONS === */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;font-family:var(--ff);font-size:13px;font-weight:500;transition:.15s;text-decoration:none}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--gold);color:#000;font-weight:600}
+.btn-primary:hover{background:var(--gold2)}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--surface2);color:var(--text)}
+.btn-danger{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25)}
+.btn-danger:hover{background:rgba(239,68,68,.2)}
+.btn-sm{padding:5px 10px;font-size:12px;border-radius:6px}
+.btn-full{width:100%;display:flex}
+.btn-icon{width:32px;height:32px;padding:0;border-radius:6px}
+
+/* === BADGES === */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:500}
+.badge-gold{background:rgba(245,197,24,.12);color:var(--gold);border:1px solid rgba(245,197,24,.25)}
+.badge-green{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25)}
+.badge-red{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25)}
+.badge-blue{background:rgba(59,130,246,.12);color:var(--blue);border:1px solid rgba(59,130,246,.25)}
+.badge-live{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* === FORM === */
+.input-group{margin-bottom:11px}
+.input-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;display:block}
+input[type=text],input[type=number],input[type=password],select,textarea{
+  width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  padding:9px 11px;color:var(--text);font-family:var(--ff);font-size:13px;outline:none;
+  transition:.15s;-webkit-appearance:none;appearance:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px}
+select option{background:var(--surface2);color:var(--text)}
+textarea{resize:vertical;min-height:60px}
+
+/* === MATCH ROW === */
+.match-row{display:flex;align-items:center;gap:6px;padding:8px 10px;background:var(--surface2);border-radius:8px;margin-bottom:5px;border:1px solid var(--border)}
+.team-name{flex:1;font-size:12px;font-weight:500}
+.team-name.right{text-align:right}
+.esito-grp{display:flex;gap:3px}
+.eb{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:var(--surface3);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;font-family:var(--fh);-webkit-tap-highlight-color:transparent}
+.eb:active{transform:scale(.93)}
+.eb.s1{background:rgba(34,197,94,.2);border-color:var(--green);color:var(--green)}
+.eb.sx{background:rgba(245,197,24,.2);border-color:var(--gold);color:var(--gold)}
+.eb.s2{background:rgba(239,68,68,.2);border-color:var(--red);color:var(--red)}
+
+/* === RESULTS === */
+.result-badge{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:var(--fh);flex-shrink:0}
+.rb-ok{background:rgba(34,197,94,.25);color:var(--green)}
+.rb-ko{background:rgba(239,68,68,.2);color:var(--red)}
+.rb-nd{background:var(--surface3);color:var(--muted)}
+
+/* === SECTION HEADER === */
+.sec{font-family:var(--fh);font-size:13px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* === GIORNATA CHIPS === */
+.gsel{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none;-ms-overflow-style:none}
+.gsel::-webkit-scrollbar{display:none}
+.gchip{flex-shrink:0;padding:5px 12px;border-radius:20px;border:1px solid var(--border);font-size:12px;cursor:pointer;color:var(--muted);background:var(--surface2);transition:.15s;white-space:nowrap}
+.gchip.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:600}
+
+/* === MINIGIOCO === */
+.squad-grid{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.squad-pill{padding:5px 10px;border-radius:20px;border:1px solid var(--border);font-size:12px;cursor:pointer;transition:.15s;background:var(--surface3);color:var(--muted);-webkit-tap-highlight-color:transparent}
+.squad-pill.selected{background:rgba(59,130,246,.18);border-color:var(--blue);color:var(--blue);font-weight:500}
+.squad-pill:active{transform:scale(.95)}
+
+/* === ALERT === */
+.alert{padding:12px 14px;border-radius:10px;font-size:13px;margin-bottom:10px;line-height:1.5}
+.alert-gold{background:rgba(245,197,24,.08);border:1px solid rgba(245,197,24,.25);color:#f5c518}
+.alert-green{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);color:var(--green)}
+.alert-red{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:var(--red)}
+.alert-blue{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.25);color:var(--blue)}
+
+/* === PROGRESS === */
+.progress{height:5px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold));border-radius:3px;transition:width .6s ease}
+
+/* === MODAL === */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:20px 20px 0 0;padding:20px 18px 30px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto}
+.modal-handle{width:36px;height:3px;background:var(--border);border-radius:2px;margin:0 auto 16px}
+.modal-title{font-family:var(--fh);font-size:22px;color:var(--gold);margin-bottom:14px}
+
+/* === TOAST === */
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:9px 18px;border-radius:20px;font-size:13px;z-index:500;white-space:nowrap;pointer-events:none;opacity:0;transition:all .3s;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* === BOTTOM NAV === */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:var(--surface);border-top:1px solid var(--border);z-index:198;padding-bottom:env(safe-area-inset-bottom,0)}
+
+/* === EMPTY STATE === */
+.empty{text-align:center;padding:28px 16px;color:var(--muted)}
+.empty i{font-size:36px;display:block;margin-bottom:10px;opacity:.35}
+.empty p{font-size:13px;line-height:1.5}
+
+/* === PARTICIPANT ROW === */
+.p-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface2);border-radius:8px;margin-bottom:5px}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;font-family:var(--fh);font-size:14px}
+
+/* === BONUS TABLE === */
+.bonus-table{width:100%;border-collapse:collapse;font-size:12px}
+.bonus-table td{padding:4px 8px;border-bottom:1px solid var(--border)}
+.bonus-table tr:last-child td{border-bottom:none}
+.bonus-table td:last-child{text-align:right;color:var(--gold);font-family:var(--fh);font-size:14px}
+
+/* === REGOLAMENTO === */
+.reg-art{margin-bottom:14px}
+.reg-art h3{font-family:var(--fh);font-size:16px;color:var(--gold);margin-bottom:4px}
+.reg-art p{font-size:12px;color:var(--muted);line-height:1.7}
+
+/* === ANIMATIONS === */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.rank-row{animation:fadeUp .3s ease both}
+
+/* === PERFETTA BANNER === */
+.perfetta-banner{background:linear-gradient(135deg,rgba(245,197,24,.15),rgba(245,197,24,.05));border:1px solid rgba(245,197,24,.4);border-radius:12px;padding:14px;text-align:center;margin-bottom:12px}
+.perfetta-banner h2{font-family:var(--fh);font-size:26px;color:var(--gold);line-height:1}
+.perfetta-banner p{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* === UTILS === */
+.divider{height:1px;background:var(--border);margin:12px 0}
+.row{display:flex;align-items:center;gap:8px}
+.row-between{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.text-muted{color:var(--muted)}
+.text-gold{color:var(--gold)}
+.text-sm{font-size:12px}
+.text-xs{font-size:11px}
+.mt-8{margin-top:8px}
+.mt-12{margin-top:12px}
+.gap-6{gap:6px}
+.fw-500{font-weight:500}
+
+/* SCORE input in admin */
+.score-input{width:44px;text-align:center;padding:5px;font-family:var(--fh);font-size:15px}
+
+/* collapsible */
+.collapsible-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:2px 0}
+.collapsible-body{display:none;margin-top:8px}
+.collapsible-body.open{display:block}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="ball">⚽</div>
+      <div>
+        <h1 id="lega-title">LISTONE 2026</h1>
+        <div class="header-sub" id="lega-subtitle">Mondiale 2026 · Lega Privata</div>
+      </div>
+      <div class="header-right">
+        <span class="badge badge-live" id="live-dot" style="display:none"><i class="ti ti-circle-filled" style="font-size:7px"></i> Live</span>
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="openRegolamento()" title="Regolamento"><i class="ti ti-book"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs bottom-nav">
+    <div class="tab active" onclick="goTab('home')" id="tab-home"><i class="ti ti-trophy" aria-hidden="true"></i>Classifica</div>
+    <div class="tab" onclick="goTab('pronostici')" id="tab-pronostici"><i class="ti ti-edit" aria-hidden="true"></i>Pronostici</div>
+    <div class="tab" onclick="goTab('risultati')" id="tab-risultati"><i class="ti ti-check-circle" aria-hidden="true"></i>Risultati</div>
+    <div class="tab" onclick="goTab('minigioco')" id="tab-minigioco"><i class="ti ti-stars" aria-hidden="true"></i>Minigioco</div>
+    <div class="tab" onclick="goTab('admin')" id="tab-admin"><i class="ti ti-settings" aria-hidden="true"></i>Admin</div>
+  </div>
+
+  <!-- ======================== PAGE: CLASSIFICA ======================== -->
+  <div class="page active" id="page-home">
+
+    <div id="perfetta-wrap" style="display:none">
+      <div class="perfetta-banner">
+        <h2>🏆 GIORNATA PERFETTA!</h2>
+        <p id="perfetta-chi">Qualcuno ha indovinato tutto!</p>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num" id="s-part">0</div><div class="stat-lbl">Partecipanti</div></div>
+      <div class="stat-box"><div class="stat-num" id="s-money">€0</div><div class="stat-lbl">Montepremi</div></div>
+      <div class="stat-box"><div class="stat-num" id="s-giocate">0</div><div class="stat-lbl">Partite giocate</div></div>
+      <div class="stat-box"><div class="stat-num" id="s-giornata">—</div><div class="stat-lbl">Giornata attiva</div></div>
+    </div>
+
+    <div class="sec">🏆 Classifica live</div>
+    <div id="classifica-list"></div>
+
+    <div class="sec">📊 Sistema bonus</div>
+    <div class="card">
+      <div class="row-between" style="margin-bottom:8px">
+        <span class="text-sm text-muted">Giornata 24 partite</span>
+        <span class="badge badge-gold">Soglia: 12 corrette</span>
+      </div>
+      <table class="bonus-table">
+        <tr><td class="text-muted">≤12 corrette</td><td>1 pt ciascuna</td></tr>
+        <tr><td class="text-muted">13 corrette</td><td>14 pt</td></tr>
+        <tr><td class="text-muted">16 corrette</td><td>20 pt</td></tr>
+        <tr><td class="text-muted">20 corrette</td><td>28 pt</td></tr>
+        <tr><td class="text-muted">24 corrette</td><td>36 pt</td></tr>
+      </table>
+      <div id="bonus-bar-wrap" style="display:none;margin-top:10px">
+        <div class="row-between text-xs text-muted" style="margin-bottom:3px">
+          <span>Miglior score giornata</span>
+          <span id="bonus-bar-label">0/24</span>
+        </div>
+        <div class="progress"><div class="progress-fill" id="bonus-bar" style="width:0%"></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======================== PAGE: PRONOSTICI ======================== -->
+  <div class="page" id="page-pronostici">
+
+    <div class="card" style="margin-bottom:10px">
+      <div class="input-group" style="margin-bottom:8px">
+        <label class="input-label">Il tuo nome</label>
+        <select id="pro-nome-sel">
+          <option value="">— Seleziona partecipante —</option>
+        </select>
+      </div>
+      <div class="gsel" id="gsel-pro"></div>
+    </div>
+
+    <div id="pro-list"></div>
+
+    <button class="btn btn-primary btn-full" onclick="salvaPronostici()">
+      <i class="ti ti-device-floppy" aria-hidden="true"></i> Salva pronostici
+    </button>
+
+    <div class="alert alert-blue mt-12" style="font-size:11px;line-height:1.6">
+      <strong>Ricorda (Art. 2):</strong> I pronostici vanno inviati entro 1 ora dall'inizio della prima partita della giornata. In ritardo: 0 punti sulla prima partita.
+    </div>
+
+  </div>
+
+  <!-- ======================== PAGE: RISULTATI ======================== -->
+  <div class="page" id="page-risultati">
+    <div class="gsel" id="gsel-ris"></div>
+    <div id="ris-content"></div>
+  </div>
+
+  <!-- ======================== PAGE: MINIGIOCO ======================== -->
+  <div class="page" id="page-minigioco">
+
+    <div class="alert alert-gold">
+      <strong>Minigioco "Passaggio Turno"</strong> (Art. 9)<br>
+      <span class="text-xs">Quota €5 · Pronostica chi supera ogni turno eliminatorio · Montepremi separato</span>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num" id="mini-n">0</div><div class="stat-lbl">Iscritti</div></div>
+      <div class="stat-box"><div class="stat-num" id="mini-m">€0</div><div class="stat-lbl">Montepremi</div></div>
+    </div>
+
+    <div class="card">
+      <div class="input-group">
+        <label class="input-label">Il tuo nome</label>
+        <select id="mini-nome-sel"><option value="">— Seleziona —</option></select>
+      </div>
+
+      <div class="sec" style="margin-top:4px">Sedicesimi di finale</div>
+      <div class="text-xs text-muted" style="margin-bottom:6px">Seleziona le squadre che passeranno il turno</div>
+      <div class="squad-grid" id="mini-grid-16"></div>
+
+      <div class="sec">Ottavi di finale</div>
+      <div class="squad-grid" id="mini-grid-8"></div>
+
+      <div class="sec">Quarti di finale</div>
+      <div class="squad-grid" id="mini-grid-4"></div>
+
+      <button class="btn btn-primary btn-full mt-12" onclick="salvaMinigame()">
+        <i class="ti ti-device-floppy" aria-hidden="true"></i> Salva pronostici minigioco
+      </button>
+    </div>
+
+    <div class="sec">🏅 Classifica minigioco</div>
+    <div id="mini-classifica"></div>
+
+  </div>
+
+  <!-- ======================== PAGE: ADMIN ======================== -->
+  <div class="page" id="page-admin">
+
+    <div class="card" id="admin-login-card">
+      <div class="card-title"><i class="ti ti-lock-square" aria-hidden="true"></i>Accesso Admin</div>
+      <div class="input-group">
+        <label class="input-label">Password</label>
+        <input type="password" id="admin-pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()">
+      </div>
+      <button class="btn btn-primary" onclick="adminLogin()"><i class="ti ti-login" aria-hidden="true"></i> Accedi</button>
+      <p class="text-xs text-muted mt-8">Password di default: <code style="background:var(--surface3);padding:1px 5px;border-radius:4px">admin123</code></p>
+    </div>
+
+    <div id="admin-panel" style="display:none">
+
+      <!-- CONFIG -->
+      <div class="sec">⚙️ Impostazioni lega</div>
+      <div class="card">
+        <div class="input-group">
+          <label class="input-label">Nome lega</label>
+          <input type="text" id="cfg-lega" placeholder="La mia lega">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="input-group">
+            <label class="input-label">Quota (€)</label>
+            <input type="number" id="cfg-quota" value="10" min="1">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Password admin</label>
+            <input type="text" id="cfg-pwd" placeholder="admin123">
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="salvaConfig()"><i class="ti ti-check" aria-hidden="true"></i> Salva config</button>
+      </div>
+
+      <!-- PARTECIPANTI -->
+      <div class="sec">👥 Partecipanti</div>
+      <div class="card">
+        <div class="row" style="margin-bottom:8px">
+          <input type="text" id="new-p-name" placeholder="Nome partecipante" style="flex:1" onkeydown="if(event.key==='Enter')addParticipant()">
+          <button class="btn btn-primary btn-sm" onclick="addParticipant()"><i class="ti ti-plus" aria-hidden="true"></i></button>
+        </div>
+        <div id="plist"></div>
+      </div>
+
+      <!-- GIORNATE -->
+      <div class="sec">📅 Giornate</div>
+      <div class="card">
+        <div class="row" style="margin-bottom:0">
+          <input type="text" id="new-g-name" placeholder="Es: Girone A - Giornata 1" style="flex:1" onkeydown="if(event.key==='Enter')addGiornata()">
+          <button class="btn btn-primary btn-sm" onclick="addGiornata()"><i class="ti ti-plus" aria-hidden="true"></i></button>
+        </div>
+        <div id="glist" style="margin-top:8px"></div>
+      </div>
+
+      <!-- PARTITE -->
+      <div class="sec">⚽ Aggiungi partite</div>
+      <div class="card">
+        <div class="input-group">
+          <label class="input-label">Giornata</label>
+          <select id="adm-gid-match" onchange="renderAdminMatchList()"></select>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="input-group" style="margin-bottom:0">
+            <label class="input-label">Squadra 1</label>
+            <input type="text" id="adm-t1" placeholder="Es: Italia">
+          </div>
+          <div class="input-group" style="margin-bottom:0">
+            <label class="input-label">Squadra 2</label>
+            <input type="text" id="adm-t2" placeholder="Es: Germania">
+          </div>
+        </div>
+        <div style="margin-top:8px">
+          <button class="btn btn-primary btn-sm" onclick="addMatch()"><i class="ti ti-plus" aria-hidden="true"></i> Aggiungi partita</button>
+        </div>
+        <div id="adm-match-list" style="margin-top:10px"></div>
+      </div>
+
+      <!-- RISULTATI -->
+      <div class="sec">✅ Inserisci risultati</div>
+      <div class="card">
+        <div class="input-group">
+          <label class="input-label">Giornata</label>
+          <select id="adm-gid-res" onchange="renderAdminResults()"></select>
+        </div>
+        <div id="adm-res-list"></div>
+        <button class="btn btn-primary btn-full mt-12" onclick="salvaRisultati()">
+          <i class="ti ti-check" aria-hidden="true"></i> Conferma risultati & aggiorna classifica
+        </button>
+      </div>
+
+      <!-- MINIGIOCO RISULTATI -->
+      <div class="sec">⭐ Risultati minigioco</div>
+      <div class="card">
+        <p class="text-xs text-muted" style="margin-bottom:8px">Inserisci le squadre effettivamente qualificate</p>
+        <div class="input-group">
+          <label class="input-label">Sedicesimi — squadre qualificate</label>
+          <div class="squad-grid" id="mini-res-16"></div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Ottavi — squadre qualificate</label>
+          <div class="squad-grid" id="mini-res-8"></div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Quarti — squadre qualificate</label>
+          <div class="squad-grid" id="mini-res-4"></div>
+        </div>
+        <button class="btn btn-primary btn-sm btn-full" onclick="salvaMiniRes()"><i class="ti ti-check" aria-hidden="true"></i> Salva risultati minigioco</button>
+      </div>
+
+      <!-- DANGER ZONE -->
+      <div class="sec">⚠️ Danger zone</div>
+      <div class="card">
+        <button class="btn btn-danger btn-full" onclick="resetAll()">
+          <i class="ti ti-trash" aria-hidden="true"></i> Reset completo — cancella tutti i dati
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- end .app -->
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()" id="modal-inner">
+    <div class="modal-handle"></div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// DATABASE
+// ============================================================
+const SK = 'listone2026_v3';
+const SQUADS = ['Brasile','Francia','Argentina','Spagna','Inghilterra','Germania','Portogallo','Olanda','Italia','Belgio','Uruguay','Croazia','Senegal','Marocco','USA','Messico','Giappone','Corea del Sud','Australia','Canada','Svizzera','Danimarca','Polonia','Serbia'];
+const AVATAR_COLORS = ['#f5c518','#22c55e','#3b82f6','#a855f7','#ef4444','#f97316','#14b8a6','#ec4899'];
+
+let db = loadDB();
+let adminUnlocked = false;
+let proTemp = {};
+let miniTemp = {16:[],8:[],4:[]};
+let miniResTemp = {16:[],8:[],4:[]};
+let adminPwd = 'admin123';
+
+function loadDB(){
+  try{ const r=localStorage.getItem(SK); if(r) return JSON.parse(r); }catch(e){}
+  return defDB();
+}
+function defDB(){
+  return {
+    config:{lega:'Listone 2026',subtitle:'Mondiale 2026 · Lega Privata',quota:10,quotaMini:5,pwd:'admin123'},
+    participants:[],
+    giornate:[],
+    matches:[],
+    pronostici:{},
+    risultati:{},
+    minigioco:{},
+    miniRis:{16:[],8:[],4:[]}
+  };
+}
+function save(){ try{ localStorage.setItem(SK,JSON.stringify(db)); }catch(e){} }
+
+// ============================================================
+// CALCOLO PUNTI
+// ============================================================
+function calcPunti(pid){
+  let tot = 0;
+  let perf = [];
+  for(const g of db.giornate){
+    const ms = db.matches.filter(m=>m.gid===g.id);
+    if(!ms.length) continue;
+    const hasAll = ms.every(m=>db.risultati[m.id]);
+    if(!hasAll) continue;
+    let cor = 0;
+    for(const m of ms){
+      const p = (db.pronostici[pid]||{})[m.id];
+      const r = db.risultati[m.id];
+      if(p && p===r) cor++;
+    }
+    const n = ms.length;
+    let pts;
+    if(n >= 24){
+      const s = 12;
+      pts = Math.min(cor,s) + Math.max(0,cor-s)*2;
+    } else {
+      pts = cor;
+    }
+    tot += pts;
+    if(cor===n && n>0) perf.push(g.nome);
+  }
+  return {punti:tot, perfette:perf};
+}
+
+function calcClassifica(){
+  return db.participants.map(p=>{
+    const r = calcPunti(p.id);
+    const proCount = db.giornate.filter(g=>
+      db.matches.filter(m=>m.gid===g.id).some(m=>(db.pronostici[p.id]||{})[m.id])
+    ).length;
+    return {id:p.id, nome:p.nome, punti:r.punti, perfette:r.perfette, giornate:proCount};
+  }).sort((a,b)=>b.punti-a.punti || a.nome.localeCompare(b.nome));
+}
+
+function calcMiniPunti(pid){
+  const entry = db.minigioco[pid];
+  if(!entry) return 0;
+  let pts = 0;
+  const fasi = ['16','8','4'];
+  for(const f of fasi){
+    const pro = (entry.pronostici||{})[f]||[];
+    const eff = (db.miniRis||{})[f]||[];
+    for(const s of pro) if(eff.includes(s)) pts++;
+  }
+  return pts;
+}
+
+function calcMiniClassifica(){
+  return Object.entries(db.minigioco).map(([pid,entry])=>{
+    return {nome:entry.nome||pid, punti:calcMiniPunti(pid)};
+  }).sort((a,b)=>b.punti-a.punti);
+}
+
+// ============================================================
+// RENDER: CLASSIFICA
+// ============================================================
+function renderClassifica(){
+  const cls = calcClassifica();
+  const n = db.participants.length;
+  const money = n * (db.config.quota||10);
+  document.getElementById('s-part').textContent = n;
+  document.getElementById('s-money').textContent = '€'+money;
+  document.getElementById('s-giocate').textContent = db.matches.filter(m=>db.risultati[m.id]).length;
+  // giornata attiva = prima con almeno 1 partita senza risultato
+  const gAtt = db.giornate.find(g=>db.matches.filter(m=>m.gid===g.id).some(m=>!db.risultati[m.id]));
+  document.getElementById('s-giornata').textContent = gAtt ? (db.giornate.indexOf(gAtt)+1) : (db.giornate.length?'✓':'—');
+  // header
+  document.getElementById('lega-title').textContent = db.config.lega||'Listone 2026';
+
+  // bonus bar
+  if(cls.length){
+    const maxPts = Math.max(...cls.map(c=>c.punti));
+    const lastG = db.giornate.slice().reverse().find(g=>{
+      const ms=db.matches.filter(m=>m.gid===g.id);
+      return ms.length && ms.every(m=>db.risultati[m.id]);
+    });
+    if(lastG){
+      const ms=db.matches.filter(m=>m.gid===lastG.id);
+      let best=0;
+      for(const p of db.participants){
+        const cor=ms.filter(m=>(db.pronostici[p.id]||{})[m.id]===db.risultati[m.id]).length;
+        if(cor>best)best=cor;
+      }
+      const tot=ms.length;
+      document.getElementById('bonus-bar-wrap').style.display='block';
+      document.getElementById('bonus-bar-label').textContent=best+'/'+tot;
+      document.getElementById('bonus-bar').style.width=(best/tot*100)+'%';
+    }
+  }
+
+  // perfetta
+  let perfWrap = document.getElementById('perfetta-wrap');
+  let perfettaChi = [];
+  for(const g of db.giornate){
+    const ms=db.matches.filter(m=>m.gid===g.id);
+    if(!ms.length||!ms.every(m=>db.risultati[m.id])) continue;
+    for(const p of db.participants){
+      const cor=ms.filter(m=>(db.pronostici[p.id]||{})[m.id]===db.risultati[m.id]).length;
+      if(cor===ms.length) perfettaChi.push(p.nome+' ('+g.nome+')');
+    }
+  }
+  if(perfettaChi.length){
+    perfWrap.style.display='block';
+    document.getElementById('perfetta-chi').textContent='🎉 '+perfettaChi.join(', ');
+  } else {
+    perfWrap.style.display='none';
+  }
+
+  const el = document.getElementById('classifica-list');
+  if(!cls.length){
+    el.innerHTML='<div class="empty"><i class="ti ti-user-plus"></i><p>Nessun partecipante.<br>L\'admin può aggiungere i partecipanti.</p></div>';
+    return;
+  }
+  el.innerHTML = cls.map((p,i)=>{
+    const pc = i===0?'pos1':i===1?'pos2':i===2?'pos3':'';
+    const nc = i===0?'g':i===1?'s':i===2?'b':'';
+    const aCol = AVATAR_COLORS[i%AVATAR_COLORS.length];
+    const perf = p.perfette.length>0 ? `<span class="badge badge-gold"><i class="ti ti-star-filled" style="font-size:8px"></i> ${p.perfette.length} perfetta</span>` : '';
+    return `<div class="rank-row ${pc}" style="animation-delay:${i*0.05}s">
+      <div class="pos-num ${nc}">${i+1}</div>
+      <div style="flex:1;min-width:0">
+        <div class="rank-name">${p.nome}</div>
+        <div class="rank-detail">${p.giornate} gior. pronosticate ${perf}</div>
+      </div>
+      <div>
+        <div class="rank-pts">${p.punti}</div>
+        <div class="rank-pts-lbl">punti</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// RENDER: PRONOSTICI
+// ============================================================
+function renderPronostici(){
+  // popola select nomi
+  const sel = document.getElementById('pro-nome-sel');
+  sel.innerHTML = '<option value="">— Seleziona partecipante —</option>' +
+    db.participants.map(p=>`<option value="${p.id}">${p.nome}</option>`).join('');
+
+  const gsel = document.getElementById('gsel-pro');
+  if(!db.giornate.length){
+    gsel.innerHTML='';
+    document.getElementById('pro-list').innerHTML='<div class="empty"><i class="ti ti-calendar-off"></i><p>Nessuna giornata creata.<br>L\'admin deve creare le giornate.</p></div>';
+    return;
+  }
+  gsel.innerHTML = db.giornate.map((g,i)=>`<div class="gchip ${i===0?'active':''}" onclick="selectGPro(this,${JSON.stringify(g.id)})">${g.nome}</div>`).join('');
+  renderMatchesPro(db.giornate[0].id);
+}
+
+function selectGPro(el, gid){
+  document.querySelectorAll('#gsel-pro .gchip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderMatchesPro(gid);
+}
+
+function renderMatchesPro(gid){
+  const ms = db.matches.filter(m=>m.gid===gid);
+  const g = db.giornate.find(x=>x.id===gid);
+  const el = document.getElementById('pro-list');
+  if(!ms.length){
+    el.innerHTML='<div class="empty"><i class="ti ti-ball-football"></i><p>Nessuna partita in questa giornata.</p></div>';
+    return;
+  }
+  if(!proTemp[gid]) proTemp[gid]={};
+  // precarica pronostici esistenti se pid selezionato
+  const pid = document.getElementById('pro-nome-sel').value;
+  if(pid && db.pronostici[pid]){
+    for(const m of ms){
+      if(db.pronostici[pid][m.id] && !proTemp[gid][m.id]){
+        proTemp[gid][m.id] = db.pronostici[pid][m.id];
+      }
+    }
+  }
+  const n = ms.length;
+  const bonus = n>=24;
+  let html = `<div class="card">
+    <div class="row-between" style="margin-bottom:10px">
+      <span class="badge badge-blue"><i class="ti ti-calendar" style="font-size:10px"></i> ${g.nome}</span>
+      <span class="text-xs text-muted">${n} partite${bonus?' · <span class="text-gold">Bonus attivo</span>':''}</span>
+    </div>`;
+  let filled = 0;
+  for(const m of ms){
+    const sel = proTemp[gid]?.[m.id]||'';
+    if(sel) filled++;
+    html+=`<div class="match-row" id="mr-${m.id}">
+      <div class="team-name right">${m.t1}</div>
+      <div class="esito-grp">
+        <button class="eb ${sel==='1'?'s1':''}" onclick="selE(${JSON.stringify(gid)},${JSON.stringify(m.id)},'1')">1</button>
+        <button class="eb ${sel==='X'?'sx':''}" onclick="selE(${JSON.stringify(gid)},${JSON.stringify(m.id)},'X')">X</button>
+        <button class="eb ${sel==='2'?'s2':''}" onclick="selE(${JSON.stringify(gid)},${JSON.stringify(m.id)},'2')">2</button>
+      </div>
+      <div class="team-name">${m.t2}</div>
+    </div>`;
+  }
+  html+=`<div class="row-between mt-8 text-xs text-muted"><span>${filled}/${n} compilate</span></div>`;
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+function selE(gid,mid,val){
+  if(!proTemp[gid]) proTemp[gid]={};
+  proTemp[gid][mid]=val;
+  const row=document.getElementById('mr-'+mid);
+  if(!row)return;
+  const btns=row.querySelectorAll('.eb');
+  btns.forEach(b=>b.className='eb');
+  if(val==='1') btns[0].classList.add('s1');
+  else if(val==='X') btns[1].classList.add('sx');
+  else if(val==='2') btns[2].classList.add('s2');
+}
+
+// When user changes participant, reload their saved pronostici
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('pro-nome-sel').addEventListener('change',()=>{
+    // reload active giornata pronostici
+    const chip = document.querySelector('#gsel-pro .gchip.active');
+    if(chip){
+      const gid = db.giornate[Array.from(document.querySelectorAll('#gsel-pro .gchip')).indexOf(chip)]?.id;
+      if(gid) { proTemp[gid]={}; renderMatchesPro(gid); }
+    }
+  });
+});
+
+function salvaPronostici(){
+  const pid = document.getElementById('pro-nome-sel').value;
+  if(!pid){ toast('⚠️ Seleziona il tuo nome!'); return; }
+  if(!db.pronostici[pid]) db.pronostici[pid]={};
+  let tot=0;
+  for(const [gid, map] of Object.entries(proTemp)){
+    for(const [mid,val] of Object.entries(map)){
+      db.pronostici[pid][mid]=val;
+      tot++;
+    }
+  }
+  save();
+  proTemp={};
+  toast('✅ Pronostici salvati! ('+tot+' pronostici)');
+  renderPronostici();
+  renderClassifica();
+}
+
+// ============================================================
+// RENDER: RISULTATI
+// ============================================================
+function renderRisultati(){
+  const gsel = document.getElementById('gsel-ris');
+  const el = document.getElementById('ris-content');
+  if(!db.giornate.length){
+    gsel.innerHTML='';
+    el.innerHTML='<div class="empty"><i class="ti ti-calendar-off"></i><p>Nessuna giornata ancora.</p></div>';
+    return;
+  }
+  gsel.innerHTML = db.giornate.map((g,i)=>`<div class="gchip ${i===0?'active':''}" onclick="selectGRis(this,${JSON.stringify(g.id)})">${g.nome}</div>`).join('');
+  renderRisGiornata(db.giornate[0].id);
+}
+
+function selectGRis(el, gid){
+  document.querySelectorAll('#gsel-ris .gchip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderRisGiornata(gid);
+}
+
+function renderRisGiornata(gid){
+  const ms = db.matches.filter(m=>m.gid===gid);
+  const g = db.giornate.find(x=>x.id===gid);
+  const el = document.getElementById('ris-content');
+  if(!ms.length){ el.innerHTML='<div class="empty"><i class="ti ti-ball-football"></i><p>Nessuna partita.</p></div>'; return; }
+
+  const cls = calcClassifica();
+  let html=`<div class="card">
+    <div class="row-between" style="margin-bottom:10px">
+      <span class="badge badge-blue"><i class="ti ti-calendar" style="font-size:10px"></i> ${g.nome}</span>
+      <span class="text-xs text-muted">${ms.filter(m=>db.risultati[m.id]).length}/${ms.length} risultati</span>
+    </div>`;
+
+  // partite + risultato ufficiale
+  for(const m of ms){
+    const r = db.risultati[m.id];
+    html+=`<div class="match-row">
+      <div class="team-name right" style="font-size:11px">${m.t1}</div>
+      <div class="result-badge ${r?'rb-ok':'rb-nd'}">${r||'?'}</div>
+      <div class="team-name" style="font-size:11px">${m.t2}</div>
+    </div>`;
+  }
+
+  if(cls.length){
+    html+=`<div class="sec" style="margin-top:12px;font-size:11px">Pronostici partecipanti</div>`;
+    // header riga nomi squadre abbreviati
+    for(const cp of cls){
+      let correct=0, wrong=0;
+      let rowHtml=`<div style="display:flex;align-items:center;gap:3px;padding:4px 0;border-bottom:1px solid var(--border)">
+        <div style="width:80px;font-size:11px;font-weight:500;flex-shrink:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${cp.nome}</div>`;
+      for(const m of ms){
+        const r=db.risultati[m.id];
+        const p=(db.pronostici[cp.id]||{})[m.id];
+        let cls2='rb-nd';
+        if(r && p){ cls2=p===r?'rb-ok':'rb-ko'; if(p===r)correct++; else wrong++; }
+        rowHtml+=`<div class="result-badge ${cls2}" title="${m.t1} vs ${m.t2}: ${p||'—'}">${p||'—'}</div>`;
+      }
+      const tot=ms.filter(m=>db.risultati[m.id]).length;
+      rowHtml+=`<div style="margin-left:auto;font-family:var(--fh);font-size:13px;color:var(--gold);white-space:nowrap;padding-left:4px">${correct}<span style="font-size:10px;color:var(--muted)">/${tot}</span></div>`;
+      rowHtml+='</div>';
+      html+=rowHtml;
+    }
+  }
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+// ============================================================
+// RENDER: MINIGIOCO
+// ============================================================
+function renderMinigioco(){
+  const nn = Object.keys(db.minigioco).length;
+  document.getElementById('mini-n').textContent = nn;
+  document.getElementById('mini-m').textContent = '€'+(nn*(db.config.quotaMini||5));
+
+  const sel = document.getElementById('mini-nome-sel');
+  sel.innerHTML = '<option value="">— Seleziona —</option>' +
+    db.participants.map(p=>`<option value="${p.id}">${p.nome}</option>`).join('');
+
+  ['16','8','4'].forEach(f=>{
+    const el = document.getElementById('mini-grid-'+f);
+    el.innerHTML = SQUADS.map(s=>{
+      const sel2 = miniTemp[f]?.includes(s);
+      return `<div class="squad-pill ${sel2?'selected':''}" onclick="toggleSquad(this,'${f}','${s}')">${s}</div>`;
+    }).join('');
+  });
+
+  const cls = calcMiniClassifica();
+  const mel = document.getElementById('mini-classifica');
+  if(!cls.length){
+    mel.innerHTML='<div class="empty"><i class="ti ti-stars"></i><p>Nessun iscritto al minigioco.</p></div>';
+    return;
+  }
+  mel.innerHTML = cls.map((p,i)=>`<div class="rank-row ${i===0?'pos1':''}">
+    <div class="pos-num ${i===0?'g':''}">${i+1}</div>
+    <div class="rank-name">${p.nome}</div>
+    <div><div class="rank-pts">${p.punti}</div><div class="rank-pts-lbl">punti</div></div>
+  </div>`).join('');
+}
+
+function toggleSquad(el, fase, squadra){
+  el.classList.toggle('selected');
+  if(!miniTemp[fase]) miniTemp[fase]=[];
+  const idx=miniTemp[fase].indexOf(squadra);
+  if(idx>=0) miniTemp[fase].splice(idx,1); else miniTemp[fase].push(squadra);
+}
+
+function salvaMinigame(){
+  const pid = document.getElementById('mini-nome-sel').value;
+  if(!pid){ toast('⚠️ Seleziona il tuo nome!'); return; }
+  const p = db.participants.find(x=>x.id===pid);
+  db.minigioco[pid]={nome:p.nome, pronostici:{16:miniTemp[16],8:miniTemp[8],4:miniTemp[4]}};
+  save();
+  miniTemp={16:[],8:[],4:[]};
+  toast('✅ Iscrizione minigioco salvata!');
+  renderMinigioco();
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+function adminLogin(){
+  const v = document.getElementById('admin-pwd').value;
+  const pwd = db.config.pwd||'admin123';
+  if(v===pwd){
+    adminUnlocked=true;
+    document.getElementById('admin-login-card').style.display='none';
+    document.getElementById('admin-panel').style.display='block';
+    renderAdminAll();
+    toast('🔓 Accesso admin effettuato!');
+  } else {
+    toast('❌ Password errata');
+    document.getElementById('admin-pwd').focus();
+  }
+}
+
+function renderAdminAll(){
+  document.getElementById('cfg-lega').value = db.config.lega||'';
+  document.getElementById('cfg-quota').value = db.config.quota||10;
+  document.getElementById('cfg-pwd').value = db.config.pwd||'admin123';
+  renderPList();
+  renderGList();
+  renderAdminSelects();
+  renderAdminMatchList();
+  renderAdminResults();
+  renderMiniResAdmin();
+}
+
+function salvaConfig(){
+  db.config.lega = document.getElementById('cfg-lega').value||'Listone 2026';
+  db.config.quota = parseInt(document.getElementById('cfg-quota').value)||10;
+  const newPwd = document.getElementById('cfg-pwd').value;
+  if(newPwd) db.config.pwd=newPwd;
+  save();
+  toast('✅ Configurazione salvata!');
+  renderClassifica();
+}
+
+function renderPList(){
+  const el = document.getElementById('plist');
+  if(!db.participants.length){ el.innerHTML='<p class="text-xs text-muted">Nessun partecipante ancora.</p>'; return; }
+  el.innerHTML = db.participants.map((p,i)=>{
+    const aCol = AVATAR_COLORS[i%AVATAR_COLORS.length];
+    return `<div class="p-row">
+      <div class="avatar" style="background:${aCol}22;color:${aCol}">${p.nome.charAt(0).toUpperCase()}</div>
+      <div style="flex:1;font-weight:500">${p.nome}</div>
+      <button class="btn btn-danger btn-sm btn-icon" onclick="removeParticipant('${p.id}')"><i class="ti ti-trash"></i></button>
+    </div>`;
+  }).join('');
+}
+
+function addParticipant(){
+  const nome = document.getElementById('new-p-name').value.trim();
+  if(!nome)return;
+  if(db.participants.find(p=>p.nome.toLowerCase()===nome.toLowerCase())){ toast('⚠️ Nome già presente'); return; }
+  db.participants.push({id:'p'+Date.now(), nome});
+  document.getElementById('new-p-name').value='';
+  save();
+  renderPList();
+  renderClassifica();
+  renderPronostici();
+  toast('✅ '+nome+' aggiunto!');
+}
+
+function removeParticipant(id){
+  if(!confirm('Rimuovere questo partecipante? Perderà tutti i pronostici.')) return;
+  db.participants = db.participants.filter(p=>p.id!==id);
+  delete db.pronostici[id];
+  delete db.minigioco[id];
+  save();
+  renderPList();
+  renderClassifica();
+}
+
+function renderGList(){
+  const el = document.getElementById('glist');
+  if(!db.giornate.length){ el.innerHTML=''; return; }
+  el.innerHTML = db.giornate.map(g=>{
+    const n = db.matches.filter(m=>m.gid===g.id).length;
+    return `<div class="p-row">
+      <div style="flex:1"><span class="fw-500">${g.nome}</span> <span class="text-xs text-muted">${n} partite</span></div>
+      <button class="btn btn-danger btn-sm btn-icon" onclick="removeGiornata('${g.id}')"><i class="ti ti-trash"></i></button>
+    </div>`;
+  }).join('');
+}
+
+function addGiornata(){
+  const nome = document.getElementById('new-g-name').value.trim();
+  if(!nome)return;
+  db.giornate.push({id:'g'+Date.now(), nome});
+  document.getElementById('new-g-name').value='';
+  save();
+  renderGList();
+  renderAdminSelects();
+  renderPronostici();
+  renderRisultati();
+  toast('✅ Giornata "'+nome+'" creata!');
+}
+
+function removeGiornata(id){
+  if(!confirm('Rimuovere la giornata? Verranno cancellate anche le partite.'))return;
+  db.matches = db.matches.filter(m=>m.gid!==id);
+  db.giornate = db.giornate.filter(g=>g.id!==id);
+  save();
+  renderGList();
+  renderAdminSelects();
+}
+
+function renderAdminSelects(){
+  const opts = db.giornate.map(g=>`<option value="${g.id}">${g.nome}</option>`).join('')||'<option>Nessuna giornata</option>';
+  document.getElementById('adm-gid-match').innerHTML = opts;
+  document.getElementById('adm-gid-res').innerHTML = opts;
+  renderAdminMatchList();
+  renderAdminResults();
+}
+
+function addMatch(){
+  const gid = document.getElementById('adm-gid-match').value;
+  const t1 = document.getElementById('adm-t1').value.trim();
+  const t2 = document.getElementById('adm-t2').value.trim();
+  if(!gid||!t1||!t2){ toast('⚠️ Compila tutti i campi'); return; }
+  db.matches.push({id:'m'+Date.now(), gid, t1, t2});
+  document.getElementById('adm-t1').value='';
+  document.getElementById('adm-t2').value='';
+  save();
+  renderAdminMatchList();
+  renderGList();
+  toast('✅ Partita aggiunta!');
+}
+
+function renderAdminMatchList(){
+  const gid = document.getElementById('adm-gid-match').value;
+  const ms = db.matches.filter(m=>m.gid===gid);
+  const el = document.getElementById('adm-match-list');
+  if(!ms.length){ el.innerHTML=''; return; }
+  el.innerHTML = ms.map(m=>`<div class="match-row">
+    <div class="team-name right" style="font-size:11px">${m.t1}</div>
+    <div class="text-xs text-muted">vs</div>
+    <div class="team-name" style="font-size:11px">${m.t2}</div>
+    <button class="btn btn-danger btn-sm btn-icon" onclick="removeMatch('${m.id}')"><i class="ti ti-x"></i></button>
+  </div>`).join('');
+}
+
+function removeMatch(id){
+  db.matches = db.matches.filter(m=>m.id!==id);
+  delete db.risultati[id];
+  save();
+  renderAdminMatchList();
+  renderGList();
+}
+
+let resTemp = {};
+function renderAdminResults(){
+  const gid = document.getElementById('adm-gid-res').value;
+  const ms = db.matches.filter(m=>m.gid===gid);
+  const el = document.getElementById('adm-res-list');
+  if(!ms.length){ el.innerHTML='<p class="text-xs text-muted">Nessuna partita in questa giornata.</p>'; return; }
+  let html='';
+  for(const m of ms){
+    const r = resTemp[m.id]||db.risultati[m.id]||'';
+    html+=`<div class="match-row">
+      <div class="team-name right" style="font-size:11px">${m.t1}</div>
+      <div class="esito-grp">
+        <button class="eb ${r==='1'?'s1':''}" onclick="setRes('${m.id}','1',this)">1</button>
+        <button class="eb ${r==='X'?'sx':''}" onclick="setRes('${m.id}','X',this)">X</button>
+        <button class="eb ${r==='2'?'s2':''}" onclick="setRes('${m.id}','2',this)">2</button>
+      </div>
+      <div class="team-name" style="font-size:11px">${m.t2}</div>
+    </div>`;
+  }
+  el.innerHTML=html;
+}
+
+function setRes(mid, val, btn){
+  resTemp[mid]=val;
+  const row=btn.closest('.match-row');
+  row.querySelectorAll('.eb').forEach(b=>b.className='eb');
+  if(val==='1') row.querySelectorAll('.eb')[0].classList.add('s1');
+  else if(val==='X') row.querySelectorAll('.eb')[1].classList.add('sx');
+  else if(val==='2') row.querySelectorAll('.eb')[2].classList.add('s2');
+}
+
+function salvaRisultati(){
+  if(!Object.keys(resTemp).length){ toast('⚠️ Nessun risultato selezionato'); return; }
+  Object.assign(db.risultati, resTemp);
+  resTemp={};
+  save();
+  toast('✅ Risultati salvati! Classifica aggiornata.');
+  renderClassifica();
+  renderRisultati();
+}
+
+// Minigioco risultati admin
+function renderMiniResAdmin(){
+  ['16','8','4'].forEach(f=>{
+    const el=document.getElementById('mini-res-'+f);
+    const saved=(db.miniRis||{})[f]||[];
+    el.innerHTML=SQUADS.map(s=>{
+      const sel=miniResTemp[f]?.includes(s)||saved.includes(s);
+      return `<div class="squad-pill ${sel?'selected':''}" onclick="toggleMiniRes(this,'${f}','${s}')">${s}</div>`;
+    }).join('');
+  });
+}
+
+function toggleMiniRes(el,fase,squadra){
+  el.classList.toggle('selected');
+  if(!miniResTemp[fase])miniResTemp[fase]=[];
+  const idx=miniResTemp[fase].indexOf(squadra);
+  if(idx>=0)miniResTemp[fase].splice(idx,1);else miniResTemp[fase].push(squadra);
+}
+
+function salvaMiniRes(){
+  if(!db.miniRis) db.miniRis={};
+  Object.assign(db.miniRis, miniResTemp);
+  miniResTemp={16:[],8:[],4:[]};
+  save();
+  toast('✅ Risultati minigioco salvati!');
+  renderMinigioco();
+}
+
+function resetAll(){
+  if(!confirm('⚠️ ATTENZIONE: questa operazione cancellerà TUTTI i dati. Sei sicuro?'))return;
+  if(!confirm('Sei davvero sicuro? Non c\'è modo di tornare indietro.'))return;
+  localStorage.removeItem(SK);
+  location.reload();
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function goTab(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='home') renderClassifica();
+  else if(name==='pronostici') renderPronostici();
+  else if(name==='risultati') renderRisultati();
+  else if(name==='minigioco') renderMinigioco();
+  window.scrollTo(0,0);
+}
+
+// ============================================================
+// MODAL: REGOLAMENTO
+// ============================================================
+function openRegolamento(){
+  document.getElementById('modal-body').innerHTML=`
+    <div class="modal-title">📋 Regolamento</div>
+    <div class="reg-art"><h3>Art. 1 – Pronostici obbligatori</h3><p>Ogni partecipante pronostica l'esito di tutte le partite dalla fase a gironi fino ai quarti di finale: 1=vittoria prima squadra, X=pareggio, 2=vittoria seconda squadra.</p></div>
+    <div class="reg-art"><h3>Art. 2 – Termine consegna</h3><p>Pronostici entro 1 ora prima della prima partita della giornata. In ritardo: pronostico prima partita annullato (0 punti), le successive restano valide.</p></div>
+    <div class="reg-art"><h3>Art. 3 – Punteggio base</h3><p>1 punto per ogni pronostico corretto. La classifica si basa sulla somma dalla fase a gironi ai quarti di finale.</p></div>
+    <div class="reg-art"><h3>Art. 4 – Vincitore</h3><p>Al termine dei quarti, il partecipante con più punti vince il montepremi. Possibili premi anche per 2° e 3° in base al numero di partecipanti.</p></div>
+    <div class="reg-art"><h3>Art. 5 – Bonus Giornata Perfetta</h3><p>Se un partecipante indovina TUTTE le partite di una giornata durante la fase a gironi, vince immediatamente l'intero montepremi.</p></div>
+    <div class="reg-art"><h3>Art. 6 – Bonus Prestazione Gironi</h3><p>Giornata da 24 partite: soglia bonus a 12. Fino a 12 corrette = 1 pt cad. Da 13 in su = 2 pt cad. Es: 13=14pt, 16=20pt, 20=28pt, 24=36pt.</p></div>
+    <div class="reg-art"><h3>Art. 9 – Minigioco "Passaggio Turno"</h3><p>Facoltativo. Quota €5. Si pronosticano le squadre che passano sedicesimi, ottavi e quarti. 1 punto per ogni squadra indovinata. Montepremi separato.</p></div>
+    <button class="btn btn-ghost btn-full mt-12" onclick="closeModal()"><i class="ti ti-x"></i> Chiudi</button>
+  `;
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('open'); }
+
+// ============================================================
+// TOAST
+// ============================================================
+let toastTimer;
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 2800);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderClassifica();
+</script>
+
+</body>
+</html>
